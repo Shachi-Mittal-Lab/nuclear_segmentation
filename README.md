@@ -33,6 +33,9 @@ The next step is the ground truth creation for evaluation. Users can choose a nu
 The next step is to evaluate each platform's nuclear segmentation relative to the ground truth annotations for the sampled subfields. This has to be done for each field. It is recommended to use `single_field.ipynb` and change the filepaths to customize for each field. This notebooks allows for qualitative evaluation in the form of platform binary masks overlayed on ground truth masks for comparison as well quantitative evaluation in the form of F1-scores at various IoU thresholds. After running a similar notebook for multiple fields sampled from the dataset, use the `all_fields.ipynb` notebook to combine the data to quantitatively compare the nuclear segmentation performance of the platforms across all the fields sampled from a dataset. This should give an idea of the relative performances of the platforms across the entire dataset for nuclear segmentation.
 
 Qualitatitve platform vs platform comparison on a single evaluation sub-field:
+CellPose | Mesmer
+:------------:|:----------:
+![Alt text](../Platforms/Code/nuclear_seg/eval_images/Bph2/CellPose_dense2.tiff) | ![Alt text](../Platforms/Code/nuclear_seg/eval_images/Bph2/Mesmer_dense2.tiff)
 
 
 Overall quantitative comparison:
