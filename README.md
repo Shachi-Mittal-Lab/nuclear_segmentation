@@ -41,7 +41,7 @@ CellPose                           | Mesmer
 Overall quantitative comparison:
 IoU=0.5 | Varying IoUs
 :---: | :---:
-![Alt text](../Platforms/Code/nuclear_seg/F1_5IoU_plot/melanoma.png) | ![Alt text](../Platforms/Code/nuclear_seg/F1_allIoU_plot/melanoma.png)
+![Alt text](imgs/melanoma_5IoU.png) | ![Alt text](imgs/melanoma_allIoU.png)
 
 ## 4. REPO STRUCTURE ##
 - - - - 
