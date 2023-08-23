@@ -34,11 +34,14 @@ The next step is to evaluate each platform's nuclear segmentation relative to th
 
 Qualitatitve platform vs platform comparison on a single evaluation sub-field:
 CellPose                           | Mesmer
-:---------------------------------:|:----------------------------------------:
-![Alt text](imgs/CellPose_dense2.png) | ![Alt text](imgs/Mesmer_dense2.png)
+:----: | :-----:
+ ![Alt text](../Platforms/Code/nuclear_seg/eval_images/Bph2/CellPose_dense2.png)| ![Alt text](../Platforms/Code/nuclear_seg/eval_images/Bph2/Mesmer_dense2.png)
 
 
 Overall quantitative comparison:
+IoU=0.5 | Varying IoUs
+:---: | :---:
+![Alt text](../Platforms/Code/nuclear_seg/F1_5IoU_plot/melanoma.png) | ![Alt text](../Platforms/Code/nuclear_seg/F1_allIoU_plot/melanoma.png)
 
 ## 4. REPO STRUCTURE ##
 - - - - 
