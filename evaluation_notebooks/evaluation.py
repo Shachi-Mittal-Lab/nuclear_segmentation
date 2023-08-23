@@ -76,7 +76,7 @@ def intersection_over_union(ground_truth, prediction):
 
 # Some code inspired from:
 # https://github.com/carpenterlab/2019_Caicedo_CytometryA/tree/master
-def F1_score_calculator(platform_img, gr_tr_img, threshold):
+def F1_score_calculator(platform_img, gr_tr_img, threshold, printing=True):
     '''
     Calculates F1-score, average Hausdorff distance between predicted and ground truth nuclei masks based on a IoU threshold
 
@@ -89,6 +89,8 @@ def F1_score_calculator(platform_img, gr_tr_img, threshold):
         IoU threshold to be considered. Predicted nuclei with lower IoU for a particular ground truth nucleus than the threshold
         will not be considered a true positive. Setting the threshold to be 0.5 or higher ensures a maximum of one true positive
         predicted nucleus for every ground truth nucleus
+    printing: bool
+        Whether to print details
         
     Returns
     f1: float
@@ -135,8 +137,10 @@ def F1_score_calculator(platform_img, gr_tr_img, threshold):
     TP, FP, FN = np.sum(true_positives), np.sum(false_positives), np.sum(false_negatives)
     # Ensures correct accounting
     assert gr_tr_nuclei_count == TP+FN, 'Something went wrong with nuclei matching'
-    
-    print(TP, FP, FN, gr_tr_nuclei_count)
+    if printing:
+        print(f'TP:{TP}, FP:{FP}, FN:{FN}, ground truth nuclei:{gr_tr_nuclei_count}')
+    else:
+        pass
     # calculates F1 score for a particular platform mask relative to the input ground truth mask
     f1 = 2*TP / (2*TP + FP + FN + 1e-9)
     # Calculation of average Hausdorff distance (not used here)
@@ -153,8 +157,10 @@ def F1_score_calculator(platform_img, gr_tr_img, threshold):
         aHD = haus/pred_gr_pairs.shape[0]
     else:
         aHD = 0
-    
-    print(f1, aHD)
+    if printing:
+        print(f'F1-score:{f1}')
+    else:
+        pass
     # number of predicted nuclei
     nuclei_count = TP + FP
     
