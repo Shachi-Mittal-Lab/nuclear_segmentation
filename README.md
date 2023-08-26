@@ -2,8 +2,7 @@
 1. About
 2. Installation
 3. Usage
-4. Repo Structure
-5. Citation
+4. Citation
 
 
 
@@ -22,15 +21,15 @@ This repository aims at providing a means for standardized implementation, as we
 - - - - 
 <b>Segmentation</b>
 
-The first step is to perform nuclear segmentation using the DAPI channel of some sample fields of a multiplex immunofluorescence dataset. We provide detailed notebooks for running CellPose, Mesmer, and StarDist deep learning platforms. The `CellPose_segmentation.ipynb`, `Mesmer_segmentation.ipynb`, and `StarDist_segmentation.ipynb` notebooks allow users to load pre-trained deep learning models, perform nuclear segmentation, and perform necessary post-processing steps to generate nuclear binary masks for evaluation. For inForm and QuPath, morphological parameters need to be optimized, which requires experience and time. We provide general README instructions for this. Upon exporting labels arrays, we provide notebooks `QuPath_postprocessing.ipynb` and `inForm_postprocessing.ipynb` to generate the binary masks for evaluation. We also provide general instructions for segmentation and generation of binary masks using CellProfiler and Fiji as platforms. Users can perform the segmentation with other platforms and integrate binary masks into this pipeline for comparison and evaluation.
+The first step is to perform nuclear segmentation using the DAPI channel of some sample fields of a multiplex immunofluorescence dataset. We provide detailed notebooks for running CellPose, Mesmer, and StarDist deep learning platforms. The `CellPose_segmentation.ipynb`, `Mesmer_segmentation.ipynb`, and `StarDist_segmentation.ipynb` notebooks allow users to load pre-trained deep learning models, perform nuclear segmentation, and perform necessary post-processing steps to generate nuclear binary masks for evaluation. For inForm and QuPath, morphological parameters need to be optimized, which requires experience and time. We provide general for instructions for this in `QuPath_segmentation.ipynb` and `inForm_segmentation.ipynb`.Upon exporting nuclear masks from inForm and QuPath, the notebooks also allow for generation of binary masks for evaluation. We also provide general instructions for segmentation and generation of binary masks using CellProfiler and Fiji as platforms in `CellProfiler_segmentation.ipynb` and `Fiji_segmentation.ipynb`. Users can perform the segmentation with other platforms as well and integrate their binary masks into this pipeline during `evaluation`.
 
 <b>Evaluation</b>
 
-The evaluation step comes after segmentation and generation of nuclear binary masks for evaluation using the platforms to be tested. It is recommended to have a directory for each field containing the binary masks from each platform and name them according to their respective platforms (e.g. `StarDist.tiff`).
+The evaluation step comes after segmentation and generation of nuclear binary masks for evaluation using the platforms to be tested. The next step is the ground truth creation for evaluation. Guidance for this is in the `single_field.ipynb` notebook. The notebook also outlines the recommended file structre for storing platform-derived and ground truth binary nuclear masks for compatibility with the evaluation code. `single_field.ipynb` produces csv files which contain F1 scores at varying IoU thresholds for the field. After running `single_field.ipynb` for each field, feed in the dierctory path to the csv files in `all_fields.ipynb` which will generate evaluations for all the fields combined. Conclusions can then be drawn about which platform to proceed with for the entire dataset.
 
-The next step is the ground truth creation for evaluation. Users can choose a number (we have gone with four) subfields for evaluation from each field. We have gone for a 256X256 size for each subfield. It is advised to choose one subfield from each quadrant of the field to ensure adequate spatial sampling. Additionally, effort should be made to sample two sparse, and two dense regions of nuclei. Once the coordinates for the subfields are chosen, ground truth nuclear masks can be annotate with GIMP. Instructions are provided for creation of ground truth nuclear annotations in GIMP. Again, it is recommended to have a separate directory containing the ground truth binary masks of each field. This is for compatibility with the pipeline. More detailed information can be found in `single_field.ipynb`.
+<b>Imgs</b>
 
-The next step is to evaluate each platform's nuclear segmentation relative to the ground truth annotations for the sampled subfields. This has to be done for each field. It is recommended to use `single_field.ipynb` and change the filepaths to customize for each field. This notebooks allows for qualitative evaluation in the form of platform binary masks overlayed on ground truth masks for comparison as well quantitative evaluation in the form of F1-scores at various IoU thresholds. After running a similar notebook for multiple fields sampled from the dataset, use the `all_fields.ipynb` notebook to combine the data to quantitatively compare the nuclear segmentation performance of the platforms across all the fields sampled from a dataset. This should give an idea of the relative performances of the platforms across the entire dataset for nuclear segmentation.
+We have also provided the grayscaled DAPI channels for some sample fields along with information about their tissue type in `imgs/DAPI_grayscale`. Additionally, we have coordinates for four evaluation sub-fields as well as their ground truth annotations for each of the sample field in `imgs/DAPI_grayscale/ground_truth_masks_coordinates`. These data can be used to test out the segmentation and evaluation pipelines in this repository.
 
 Qualitatitve platform vs platform comparison on a single evaluation sub-field:
 CellPose                           | Mesmer
@@ -43,9 +42,6 @@ IoU=0.5 | Varying IoUs
 :---: | :---:
 ![Alt text](imgs/melanoma_5IoU.png) | ![Alt text](imgs/melanoma_allIoU.png)
 
-## 4. REPO STRUCTURE ##
-- - - - 
 
-
-## 5. CITATION ##
+## 4. CITATION ##
 - - - - 
