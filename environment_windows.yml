@@ -183,7 +183,7 @@ dependencies:
     - grpcio==1.57.0
     - h5py==3.9.0
     - imageio==2.31.2
-    - keras==2.8.0
+    - keras==2.13.1
     - kiwisolver==1.4.5
     - lazy-loader==0.3
     - libclang==16.0.6
@@ -197,7 +197,7 @@ dependencies:
     - opt-einsum==3.3.0
     - pandas==2.0.3
     - pillow==10.0.0
-    - protobuf==3.19.6
+    - protobuf==3.20.3
     - pyasn1==0.5.0
     - pyasn1-modules==0.3.0
     - pydot==1.4.2
@@ -214,10 +214,10 @@ dependencies:
     - stardist==0.8.5
     - sympy==1.12
     - tensorboard==2.13.0
-    - tensorboard-data-server==0.6.1
+    - tensorboard-data-server==0.7.0
     - tensorboard-plugin-wit==1.8.1
     - tensorflow==2.13.0
-    - tensorflow-estimator==2.8.0
+    - tensorflow-estimator==2.13.0
     - tensorflow-intel==2.13.0
     - tensorflow-io-gcs-filesystem==0.31.0
     - termcolor==2.3.0
