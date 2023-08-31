@@ -1,23 +1,27 @@
 name: nuclear_seg
 channels:
-  - conda-forge
   - defaults
 dependencies:
-  - blas=1.0
-  - bzip2=1.0.8
-  - ca-certificates=2023.05.30
-  - libffi=3.4.4
-  - llvm-openmp=14.0.6
-  - openssl=3.0.10
-  - pip=23.2.1
-  - python=3.10.12
-  - setuptools=68.0.0
-  - sqlite=3.41.2
-  - tbb=2021.8.0
-  - tk=8.6.12
-  - wheel=0.38.4
-  - xz=5.4.2
-  - zlib=1.2.13
+  - blas=1.0=openblas
+  - bzip2=1.0.8=h620ffc9_4
+  - ca-certificates=2023.05.30=hca03da5_0
+  - libcxx=14.0.6=h848a8c0_0
+  - libffi=3.4.4=hca03da5_0
+  - libgfortran=5.0.0=11_3_0_hca03da5_28
+  - libgfortran5=11.3.0=h009349e_28
+  - libopenblas=0.3.21=h269037a_0
+  - llvm-openmp=14.0.6=hc6e5704_0
+  - ncurses=6.4=h313beb8_0
+  - openssl=3.0.10=h1a28f6b_2
+  - pip=23.2.1=py310hca03da5_0
+  - python=3.10.12=hb885b13_0
+  - readline=8.2=h1a28f6b_0
+  - setuptools=68.0.0=py310hca03da5_0
+  - sqlite=3.41.2=h80987f9_0
+  - tk=8.6.12=hb8d0fd4_0
+  - wheel=0.38.4=py310hca03da5_0
+  - xz=5.4.2=h80987f9_0
+  - zlib=1.2.13=h5a0b063_0
   - pip:
       - anyio==4.0.0
       - appnope==0.1.3
@@ -35,9 +39,9 @@ dependencies:
       - certifi==2023.7.22
       - cffi==1.15.1
       - charset-normalizer==3.2.0
-      - cmake==3.27.2
       - comm==0.1.4
       - contourpy==1.1.0
+      - csbdeep==0.7.4
       - cycler==0.11.0
       - debugpy==1.6.7.post1
       - decorator==5.1.1
@@ -77,7 +81,6 @@ dependencies:
       - jupyterlab-widgets==3.0.8
       - kiwisolver==1.4.5
       - lazy-loader==0.3
-      - lit==16.0.6
       - llvmlite==0.40.1
       - markupsafe==2.1.3
       - matplotlib==3.7.2
@@ -94,17 +97,6 @@ dependencies:
       - notebook-shim==0.2.3
       - numba==0.57.1
       - numpy==1.24.4
-      - nvidia-cublas-cu11==11.10.3.66
-      - nvidia-cuda-cupti-cu11==11.7.101
-      - nvidia-cuda-nvrtc-cu11==11.7.99
-      - nvidia-cuda-runtime-cu11==11.7.99
-      - nvidia-cudnn-cu11==8.5.0.96
-      - nvidia-cufft-cu11==10.9.0.58
-      - nvidia-curand-cu11==10.2.10.91
-      - nvidia-cusolver-cu11==11.4.0.1
-      - nvidia-cusparse-cu11==11.7.4.91
-      - nvidia-nccl-cu11==2.14.3
-      - nvidia-nvtx-cu11==11.7.91
       - opencv-python==4.8.0.76
       - opencv-python-headless==4.8.0.76
       - overrides==7.4.0
@@ -148,6 +140,7 @@ dependencies:
       - sortedcontainers==2.4.0
       - soupsieve==2.4.1
       - stack-data==0.6.2
+      - stardist==0.8.5
       - sympy==1.12
       - terminado==0.17.1
       - tifffile==2023.8.12
@@ -157,7 +150,6 @@ dependencies:
       - tornado==6.3.3
       - tqdm==4.66.1
       - traitlets==5.9.0
-      - triton==2.0.0
       - typing-extensions==4.7.1
       - tzdata==2023.3
       - uri-template==1.3.0
@@ -167,4 +159,4 @@ dependencies:
       - webencodings==0.5.1
       - websocket-client==1.6.2
       - widgetsnbextension==4.0.8
-prefix: /home/mrl/anaconda3/envs/nuclear_seg
+prefix: /Users/abishek/miniconda3/envs/nuclear_seg
