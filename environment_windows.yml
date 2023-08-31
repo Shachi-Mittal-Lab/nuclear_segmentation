@@ -1,4 +1,4 @@
-name: nuclear_seg_new
+name: nuclear_seg
 channels:
   - conda-forge
   - defaults
