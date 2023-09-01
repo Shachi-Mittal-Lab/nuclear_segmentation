@@ -17,7 +17,9 @@ This repository aims at providing a means for standardized implementation, as we
 Linux, Windows and Mac OS are supported for running the code. 
 
 1. Install [Anaconda](https://www.anaconda.com/).
+
 2. Clone this repository by typing `git clone https://github.com/Shachi-Mittal-Lab/nuclear_segmentation.git` in an anaconda/command prompt
+   
 3. Create and run a virtual environment for this code:
 - Windows:
     - From the nuclear_segmentation directory run `conda env create -f environment_windows.yml`.
