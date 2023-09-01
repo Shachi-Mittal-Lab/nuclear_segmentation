@@ -2,26 +2,26 @@ name: nuclear_seg
 channels:
   - defaults
 dependencies:
-  - blas=1.0=openblas
-  - bzip2=1.0.8=h620ffc9_4
-  - ca-certificates=2023.05.30=hca03da5_0
-  - libcxx=14.0.6=h848a8c0_0
-  - libffi=3.4.4=hca03da5_0
-  - libgfortran=5.0.0=11_3_0_hca03da5_28
-  - libgfortran5=11.3.0=h009349e_28
-  - libopenblas=0.3.21=h269037a_0
-  - llvm-openmp=14.0.6=hc6e5704_0
-  - ncurses=6.4=h313beb8_0
-  - openssl=3.0.10=h1a28f6b_2
-  - pip=23.2.1=py310hca03da5_0
-  - python=3.10.12=hb885b13_0
-  - readline=8.2=h1a28f6b_0
-  - setuptools=68.0.0=py310hca03da5_0
-  - sqlite=3.41.2=h80987f9_0
-  - tk=8.6.12=hb8d0fd4_0
-  - wheel=0.38.4=py310hca03da5_0
-  - xz=5.4.2=h80987f9_0
-  - zlib=1.2.13=h5a0b063_0
+  - blas=1.0
+  - bzip2=1.0.8
+  - ca-certificates=2023.05.30
+  - libcxx=14.0.6
+  - libffi=3.4.4
+  - libgfortran=5.0.0
+  - libgfortran5=11.3.0
+  - libopenblas=0.3.21
+  - llvm-openmp=14.0.6
+  - ncurses=6.4
+  - openssl=3.0.10
+  - pip=23.2.1
+  - python=3.10.12
+  - readline=8.2
+  - setuptools=68.0.0
+  - sqlite=3.41.2
+  - tk=8.6.12
+  - wheel=0.38.4
+  - xz=5.4.2
+  - zlib=1.2.13
   - pip:
       - anyio==4.0.0
       - appnope==0.1.3
