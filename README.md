@@ -56,8 +56,4 @@ CellPose                           | Mesmer
 Overall quantitative comparison:
 IoU=0.5 | Varying IoUs
 :---: | :---:
-<<<<<<< HEAD
 ![Alt text](imgs/README_figures/melanoma_5IoU.png) | ![Alt text](imgs/README_figures//melanoma_allIoU.png)
-=======
-![Alt text](imgs/README_figures/melanoma_5IoU.png) | ![Alt text](imgsREADME_figures//melanoma_allIoU.png)
->>>>>>> 340fb290947d656cc4f87a28ae65c93e636fb9b7
