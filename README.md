@@ -17,7 +17,9 @@ This repository aims at providing a means for standardized implementation, as we
 Linux, Windows and Mac OS are supported for running the code. 
 
 1. Install [Anaconda](https://www.anaconda.com/).
+
 2. Clone this repository by typing `git clone https://github.com/Shachi-Mittal-Lab/nuclear_segmentation.git` in an anaconda/command prompt
+   
 3. Create and run a virtual environment for this code:
 - Windows:
     - From the nuclear_segmentation directory run `conda env create -f environment_windows.yml`.
@@ -54,4 +56,8 @@ CellPose                           | Mesmer
 Overall quantitative comparison:
 IoU=0.5 | Varying IoUs
 :---: | :---:
+<<<<<<< HEAD
 ![Alt text](imgs/README_figures/melanoma_5IoU.png) | ![Alt text](imgs/README_figures//melanoma_allIoU.png)
+=======
+![Alt text](imgs/README_figures/melanoma_5IoU.png) | ![Alt text](imgsREADME_figures//melanoma_allIoU.png)
+>>>>>>> 340fb290947d656cc4f87a28ae65c93e636fb9b7
