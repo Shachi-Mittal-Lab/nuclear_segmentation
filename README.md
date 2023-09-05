@@ -2,9 +2,9 @@
 1. About
 2. Installation
 3. Usage
-   #. 3.1. Segmentation
-   #. 3.2. Evaluation
-   #. 3.3. Imgs
+&nbsp; 3.1. Segmentation
+&nbsp; 3.2. Evaluation
+&nbsp; 3.3. Imgs
 
 
 ## 1. ABOUT ##
