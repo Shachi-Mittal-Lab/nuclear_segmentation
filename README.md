@@ -28,8 +28,8 @@ Linux, Windows and Mac OS are supported for running the code.
 - Mac OS:
     - From the nuclear_segmentation directory run `conda env create -f environment_mac.yml`.
     - There are extra steps that may need to be taken for running segmentation notebooks provided in this GitHub for Mac OS users:
-        - For running `Mesmer_segmentation.ipynb` it is necessary to install `deepcell-tf` package containing the Mesmer pre-trained model. Guidance for this can be found in the [deepcell-tf GitHub](https://github.com/vanvalenlab/deepcell-tf/tree/master). As a note, we were having trouble installing deepcell-tf on Mac OS.
-        - Aditionally, if you see `Symbol not found:` errors during `import stardist` in `stardist_segmentation.ipynb`, refer to this [workaround](https://github.com/stardist/stardist/issues/19#issuecomment-535610758).
+        - For running `Mesmer_segmentation.ipynb` it is necessary to install `deepcell-tf` package containing the Mesmer pre-trained model. Guidance for this can be found in the [deepcell-tf GitHub](https://github.com/vanvalenlab/deepcell-tf/tree/master). 
+        - Aditionally, if you see `Symbol not found:` errors during `import stardist` in `stardist_segmentation.ipynb`, refer to this (https://github.com/stardist/stardist/issues/19#issuecomment-535610758).
 
 4. Activate the conda environment with the installed packages and dependencies by typing `conda activate nuclear_seg`.
 
