@@ -10,8 +10,7 @@ from scipy.spatial.distance import directed_hausdorff as hausdorff
 from scipy import stats
 import sigfig
 import seaborn as sns
-from evaluation_viz import intersection_over_union
-from evaluation_viz import F1_score_calculator
+from evaluation_viz_2 import F1_score_calculator
 sns.set_style("whitegrid")
 
 def halfIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
@@ -80,6 +79,8 @@ def halfIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
                     top_left_column = coordinate_dict[subfield][1]
                     # crops the platform binary mask to isolate the region to be evaluated
                     platform_img = platform_whole_img[top_left_row:top_left_row+256, top_left_column:top_left_column+256]
+                    platform_img=skimage.segmentation.clear_border(platform_img)
+                    gr_tr_img=skimage.segmentation.clear_border(gr_tr_img)
                     # creating a ground truth binary mask for visualization purposes in white and black
                     gr_tr_img_show = np.uint8(np.zeros((gr_tr_img.shape[0], gr_tr_img.shape[1], 3)))
                     gr_tr_img_show[gr_tr_img == 255] = [255, 255, 255]
@@ -147,7 +148,7 @@ def multipleIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
         else:
             pass
 
-    assert all(0.5 <= iThresh <= 1 for iThresh in IoU_thresh_list), "Error: IoU thresholds should be between 0.5 and 1."
+    # assert all(0.5 <= iThresh <= 1 for iThresh in IoU_thresh_list), "Error: IoU thresholds should be between 0.5 and 1."
     IoU_thresh_list.sort()
 
     for region in regions_list:
@@ -208,6 +209,8 @@ def multipleIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
                         top_left_column = coordinate_dict[subfield][1]
                         # crops the platform binary mask to isolate the region to be evaluated
                         platform_img = platform_whole_img[top_left_row:top_left_row+256, top_left_column:top_left_column+256]
+                        platform_img=skimage.segmentation.clear_border(platform_img)
+                        gr_tr_img=skimage.segmentation.clear_border(gr_tr_img)
                         platform_img_labels = skimage.morphology.label(platform_img)
                         gr_tr_img_labels = skimage.morphology.label(gr_tr_img)
                         gr_tr_img_labels = skimage.segmentation.relabel_sequential(gr_tr_img_labels)[0]
@@ -218,7 +221,7 @@ def multipleIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
                         
                         # calculating the F1-score of the current platform subfield at the current IoU threshold
                         F1, nuclei_count, cur_gr_tr_nuclei_count, aHD, matches = F1_score_calculator(platform_img, gr_tr_img,
-                                                                                            IoU_thresh, printing=False)
+                                                                                            IoU_thresh, printing=True)
                         # to save the overlayed images for qualitative evaluation
                         if save_qual_imgs:
 
@@ -261,8 +264,8 @@ def multipleIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
                             FP_pred_mask = np.isin(platform_img_labels, FP_pred_IDs)
 
                             pred_viz = np.zeros((platform_img.shape[0], platform_img.shape[1], 3), dtype=np.uint8)
-                            pred_viz[TP_pred_mask, :] = [255, 0, 0]
-                            pred_viz[FP_pred_mask, :] = [0, 0, 255]
+                            pred_viz[TP_pred_mask, :] = [0, 255, 0]
+                            pred_viz[FP_pred_mask, :] = [255, 0, 0]
                             
                             grtr_viz = np.zeros((gr_tr_img.shape[0], gr_tr_img.shape[1], 3), dtype=np.uint8)
                             grtr_viz[TP_grtr_mask, :] = [0, 255, 0]
@@ -275,7 +278,9 @@ def multipleIoUThresh(root_dir, regions_coordinate_dict, save_qual_imgs,
                         
                         else:
                             pass
-
+                        print(region + ' ' + platform + '_' + subfield)
+                        print(IoU_thresh)
+                        print('***')
                         # Adding the F1-score to the F1-score dictionary
                         df_dict_F1[platform].append(F1)
                     else:
@@ -301,7 +306,6 @@ def csv_viz_halfIoU(root_dir):
         os.makedirs(halfIoU_viz_dir)
     else:
         pass
-    halfIoU_viz_path = os.path.join(halfIoU_viz_dir, 'halfIoU_viz.png')
 
     # Appending the dataframes of each field into a list
     halfIoU_df_list = []
@@ -309,8 +313,16 @@ def csv_viz_halfIoU(root_dir):
         halfIoU_df_list.append(pd.read_csv(os.path.join(halfIoU_csv_path, csv_file)))
     # Concatenating the dataframes into one big dataframe
     combined_halfIoU_df = pd.concat(halfIoU_df_list)
+    ### Need to delete this line for github
+    combined_halfIoU_df = combined_halfIoU_df.rename(columns={'CellPose':'Cellpose', 'InForm':'inForm®'})
     F1_barplot_combined = sns.barplot(combined_halfIoU_df, errorbar='ci')
-    F1_barplot_combined.set(xlabel ="Platform", ylabel = "F1-score", title ='F1-score (IoU Threshold = 0.5)')
+    F1_barplot_combined.set_xlabel(xlabel ="Segmentation Platform", fontweight='bold', fontsize='large')
+    F1_barplot_combined.set_ylabel(ylabel = "F1-score", fontweight='bold', fontsize='large')
+    F1_barplot_combined.set_title(label ='F1-score (IoU Threshold = 0.5)', fontweight='bold', fontsize='x-large')
+    plt.xticks(fontweight='regular', fontsize='large')
+    plt.yticks(np.arange(0.0, 0.85, step=0.2), fontweight='regular', fontsize='large')
+
+    halfIoU_viz_path = os.path.join(halfIoU_viz_dir, 'halfIoU_viz.png')
     plt.savefig(halfIoU_viz_path, dpi=500)
 
     return None
@@ -322,7 +334,6 @@ def csv_viz_multipleIoU(root_dir):
         os.makedirs(multipleIoU_viz_dir)
     else:
         pass
-    multipleIoU_viz_path = os.path.join(multipleIoU_viz_dir, 'multipleIoU_viz.png')
 
     # Appending the dataframes of each field into a list
     multipleIoU_df_list = []
@@ -331,8 +342,16 @@ def csv_viz_multipleIoU(root_dir):
     # Concatenating the dataframes into one big dataframe
     combined_multipleIoU_df = sum(multipleIoU_df_list)/len(multipleIoU_df_list)
     combined_multipleIoU_df = combined_multipleIoU_df.set_index('Unnamed: 0')
-    combined_F1_lineplot = sns.lineplot(data=combined_multipleIoU_df, dashes=False, markers='s', legend=True)
-    combined_F1_lineplot.set(xlabel ="IoU Threshold", ylabel = "F1-score", title ='F1-score at Varying IoU Thresholds')
+    combined_F1_lineplot = sns.lineplot(data=combined_multipleIoU_df, dashes=False, markers='s', legend=False)
+
+    combined_F1_lineplot.set_xlabel(xlabel ="IoU Threshold", fontweight='bold', fontsize='large')
+    combined_F1_lineplot.set_ylabel(ylabel = "F1-score", fontweight='bold', fontsize='large')
+    combined_F1_lineplot.set_title(label ='F1-score at Varying IoU Thresholds', fontweight='bold', fontsize='x-large')
+    plt.xticks(np.arange(0, 0.95, step=0.2), fontweight='regular', fontsize='large')
+    plt.yticks(np.arange(0, 0.85, step=0.1), fontweight='regular', fontsize='large')
+
+    region = csv_file[:csv_file.find('.')]
+    multipleIoU_viz_path = os.path.join(multipleIoU_viz_dir, 'multipleIoU_viz.png')
     plt.savefig(multipleIoU_viz_path, dpi=500)
 
     return None
