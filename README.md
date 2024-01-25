@@ -54,7 +54,7 @@ Qualitatitve, platform vs platform comparison on a single evaluation sub-field:
 |Mesmer|StarDist|Key|
 | :----: | :-----: | :-----: |
 |Overlay|Overlay||
-| ![Alt text](./imgs/README_figures/Mesmer_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/StarDist_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/overlay_key_mess_around.png) |
+| ![Alt text](./imgs/README_figures/Mesmer_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/StarDist_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/overlay_key.png) |
 |Prediction|Prediction|IoU Threshold = 0.2|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_pred_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_pred_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/pred_key.png) |
 |Ground Truth|Ground Truth|IoU Threshold = 0.2|
