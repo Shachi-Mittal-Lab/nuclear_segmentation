@@ -40,23 +40,37 @@ Linux, Windows and Mac OS are supported for running the code.
 - - - - 
 <b>3.1. Segmentation</b>
 
-The first step is to perform nuclear segmentation using the DAPI channel of some sample fields of a multiplex immunofluorescence dataset. We provide detailed notebooks for running CellPose, Mesmer, and StarDist deep learning platforms. The `CellPose_segmentation.ipynb`, `Mesmer_segmentation.ipynb`, and `StarDist_segmentation.ipynb` notebooks allow users to load pre-trained deep learning models, perform nuclear segmentation, and perform necessary post-processing steps to generate nuclear binary masks for evaluation. For inForm and QuPath, morphological parameters need to be optimized, which requires experience and time. We provide general guidance for this in `QuPath_segmentation.ipynb` and `inForm_segmentation.ipynb`.Upon exporting nuclear masks from inForm and QuPath, the notebooks also allow for generation of binary masks for evaluation. We also provide general guidance for segmentation and generation of binary masks using CellProfiler and Fiji as platforms in `CellProfiler_segmentation.ipynb` and `Fiji_segmentation.ipynb`. Users can perform the segmentation with other platforms as well and integrate their binary masks into this pipeline during `Evaluation`. The DAPI signal used for segmentation in our paper is available in `imgs/DAPI_grayscale`.
+The first step is to perform nuclear segmentation using the DAPI channel of some sample fields of a multiplex immunofluorescence dataset. We provide detailed notebooks for running CellPose, Mesmer, and StarDist deep learning platforms. The `CellPose_segmentation.ipynb`, `Mesmer_segmentation.ipynb`, and `StarDist_segmentation.ipynb` notebooks allow users to load pre-trained deep learning models, perform nuclear segmentation, and perform necessary post-processing steps to generate nuclear binary masks for evaluation. For inForm and QuPath, morphological parameters need to be optimized, which requires experience and time. We provide general guidance for this in `QuPath_segmentation.ipynb` and `inForm_segmentation.ipynb`.Upon exporting nuclear label masks from inForm and QuPath, the notebooks also allow for generation of binary masks for evaluation. We also provide general guidance for segmentation and generation of binary masks using CellProfiler and Fiji as platforms in `CellProfiler_segmentation.ipynb` and `Fiji_segmentation.ipynb`. Users can perform the segmentation with other platforms as well and integrate their binary masks into this pipeline during `Evaluation`. The DAPI signal from regions of various whole slide images used for segmentation in our paper is available in `imgs/DAPI_grayscale`.
 
 <b>3.2. Evaluation</b>
 
-The evaluation step comes after segmentation and generation of nuclear binary masks. The next step is the ground truth creation for evaluation. Guidance for this is in the `score_calculation.ipynb` notebook. The notebook also outlines the recommended file structre for storing platform-derived and ground truth binary nuclear masks for compatibility with the evaluation code. The ground truth annotations of evaluation subfields for the data used in our paper as well as the coordinates of the subfields in the overall field are available in `imgs/ground_truth_masks_coordinates`. `score_calculation.ipynb` produces csv files which contain F1 scores at varying IoU thresholds for the field. After running `score_calculation.ipynb` for each field, feed in the dierctory path to the csv files in `vizualization.ipynb` which will generate evaluations for all the fields combined. Conclusions can then be drawn about which platform to proceed with for the entire dataset.
+The evaluation step comes after segmentation and generation of nuclear binary masks. The next step is the ground truth creation for evaluation. Guidance for this is in the `Evaluation.ipynb` notebook. The notebook also outlines the recommended file structre for storing platform-derived and ground truth binary nuclear masks for compatibility with the evaluation code. The ground truth annotations of evaluation subfields for the data used in our paper as well as the coordinates of the subfields in the overall field are available in `imgs/ground_truth_masks_coordinates`. `Evaluation.ipynb` produces csv files which contain F1-scores at varying IoU thresholds for each evaluatory subregion from all the regions under analysis. `Evaluation.ipynb` can then be used to produce visualizations of quantitative evaluation and comparison of segmentation performace between platforms. `Evaluation.ipynb` can also be used for qualitative evaluation visualizations. Conclusions can then be drawn about which platform to proceed with for the entire dataset.
 
 <b>3.3. Imgs</b>
 
 We have also provided the grayscaled DAPI channels for some sample fields along with information about their tissue type in `imgs/DAPI_grayscale`. Additionally, we have coordinates for four evaluation sub-fields as well as their ground truth annotations for each of the sample field in `imgs/DAPI_grayscale/ground_truth_masks_coordinates`. These data can be used to test out the segmentation and evaluation pipelines in this repository.
 
 Qualitatitve, platform vs platform comparison on a single evaluation sub-field:
-CellPose                           | Mesmer
-:----: | :-----:
-![Alt text](imgs/README_figures/CellPose_dense2.png) | ![Alt text](imgs/README_figures/Mesmer_dense2.png)
+|Mesmer|StarDist|Key|
+| :----: | :-----: | :-----: |
+|Overlay|Overlay||
+| ![Alt text](./imgs/README_figures/Mesmer_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/StarDist_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/overlay_key.png) |
+|Prediction|Prediction|IoU Threshold = 0.2|
+| ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_pred_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_pred_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/pred_key.png) |
+|Ground Truth|Ground Truth|IoU Threshold = 0.2|
+| ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_grtr_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_grtr_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/grtr_key.png) |
+| Prediction|Prediction|IoU Threshold = 0.5|
+| ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_0.5_pred_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_0.5_pred_35_175_65_65.png) | ![Alt text](./imgs/README_figures/pred_key.png) |
+| Ground Truth|Ground Truth|IoU Threshold = 0.5|
+| ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_0.5_grtr_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_0.5_grtr_35_175_65_65.png) | ![Alt text](./imgs/README_figures/grtr_key.png) |
+| Prediction|Prediction|IoU Threshold = 0.8|
+| ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_pred_0.8_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_pred_0.8_35_175_65_65.png)| ![Alt text](./imgs/README_figures/pred_key.png) |
+| Ground Truth|Ground Truth|IoU Threshold = 0.8|
+| ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_grtr_0.8_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_grtr_0.8_35_175_65_65.png)| ![Alt text](./imgs/README_figures/grtr_key.png) |
 
 
-Overall quantitative comparison:
-IoU=0.5 | Varying IoUs
+
+Quantitative comparison over evaluation subregions from multiple regions from different whole slide images of the dataset:
+IoU Threshold=0.5 | Varying IoU Thresholds
 :---: | :---:
-![Alt text](imgs/README_figures/melanoma_5IoU.png) | ![Alt text](imgs/README_figures//melanoma_allIoU.png)
+![Alt text](./imgs/README_figures/halfIoU.png) | ![Alt text](./imgs/README_figures//multipleIoU.png)
