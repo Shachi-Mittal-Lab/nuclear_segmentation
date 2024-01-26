@@ -50,6 +50,9 @@ The evaluation step comes after segmentation and generation of nuclear binary ma
 
 We have also provided the grayscaled DAPI channels for some sample fields along with information about their tissue type in `imgs/DAPI_grayscale`. Additionally, we have coordinates for four evaluation sub-fields as well as their ground truth annotations for each of the sample field in `imgs/DAPI_grayscale/ground_truth_masks_coordinates`. These data can be used to test out the segmentation and evaluation pipelines in this repository.
 
+
+The following types of evaluations can be achieved with the pipeline in this repository.
+
 Qualitatitve, platform vs platform comparison on a zoomed in region of interest of a single evaluation sub-region:
 |Mesmer|StarDist|Key|
 | :----: | :-----: | :-----: |
@@ -70,7 +73,7 @@ Qualitatitve, platform vs platform comparison on a zoomed in region of interest 
 
 
 
-Quantitative comparison over evaluation subregions from multiple regions from different whole slide images of the dataset:
+Quantitative comparison over evaluation subregions from multiple regions from different whole slide images of a dataset:
 IoU Threshold=0.5 | Varying IoU Thresholds
 :---: | :---:
 ![Alt text](./imgs/README_figures/halfIoU.png) | ![Alt text](./imgs/README_figures//multipleIoU.png)
