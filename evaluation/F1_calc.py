@@ -157,17 +157,17 @@ def halfIoUThresh(
                     if save_qual_imgs:
                         if not os.path.exists(
                             os.path.join(root_dir, "qual_imgs", region,
-                                         "halfIoU")
+                                         "overlay_visualization")
                         ):
                             os.makedirs(
                                 os.path.join(root_dir, "qual_imgs", region,
-                                             "halfIoU")
+                                             "overlay_visualization")
                             )
                         else:
                             pass
                         eval_images_halfIoU_path = os.path.join(
                             os.path.join(root_dir, "qual_imgs", region,
-                                         "halfIoU")
+                                         "overlay_visualization")
                         )
                         io.imsave(
                             os.path.join(
@@ -185,10 +185,9 @@ def halfIoUThresh(
                         F1,
                         nuclei_count,
                         cur_gr_tr_nuclei_count,
-                        aHD,
                         matches,
                     ) = F1_score_calculator(
-                        platform_img, gr_tr_img, 0.5, printing=print_qual_imgs
+                        platform_img, gr_tr_img, 0.5, print_qual_imgs
                     )
 
                     # printing the qualitative images if needed
@@ -364,7 +363,6 @@ def multipleIoUThresh(
                             F1,
                             nuclei_count,
                             cur_gr_tr_nuclei_count,
-                            aHD,
                             matches,
                         ) = F1_score_calculator(
                             platform_img, gr_tr_img, IoU_thresh,
@@ -377,13 +375,13 @@ def multipleIoUThresh(
                             if not os.path.exists(
                                 os.path.join(
                                     root_dir, "qual_imgs", region,
-                                    "multipleIoU"
+                                    "F1_visualization"
                                 )
                             ):
                                 os.makedirs(
                                     os.path.join(
                                         root_dir, "qual_imgs", region,
-                                        "multipleIoU"
+                                        "F1_visualization"
                                     )
                                 )
                             else:
@@ -391,21 +389,21 @@ def multipleIoUThresh(
                             eval_images_multipleIoU_path = os.path.join(
                                 os.path.join(
                                     root_dir, "qual_imgs", region,
-                                    "multipleIoU"
+                                    "F1_visualization"
                                 )
                             )
 
                             if not os.path.exists(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}"
+                                    f"{IoU_thresh}_IoU_threshold"
                                 )
                             ):
                                 # Create the directory
                                 os.makedirs(
                                     os.path.join(
                                         eval_images_multipleIoU_path,
-                                        f"{IoU_thresh}"
+                                        f"{IoU_thresh}_IoU_threshold"
                                     )
                                 )
                             else:
@@ -413,7 +411,7 @@ def multipleIoUThresh(
                             if not os.path.exists(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}",
+                                    f"{IoU_thresh}_IoU_threshold",
                                     "ground_truth",
                                 )
                             ):
@@ -421,7 +419,7 @@ def multipleIoUThresh(
                                 os.makedirs(
                                     os.path.join(
                                         eval_images_multipleIoU_path,
-                                        f"{IoU_thresh}",
+                                        f"{IoU_thresh}_IoU_threshold",
                                         "ground_truth",
                                     )
                                 )
@@ -430,7 +428,7 @@ def multipleIoUThresh(
                             if not os.path.exists(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}",
+                                    f"{IoU_thresh}_IoU_threshold",
                                     "predictions",
                                 )
                             ):
@@ -438,7 +436,7 @@ def multipleIoUThresh(
                                 os.makedirs(
                                     os.path.join(
                                         eval_images_multipleIoU_path,
-                                        f"{IoU_thresh}",
+                                        f"{IoU_thresh}_IoU_threshold",
                                         "predictions",
                                     )
                                 )
@@ -496,7 +494,7 @@ def multipleIoUThresh(
                             io.imsave(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}",
+                                    f"{IoU_thresh}_IoU_threshold",
                                     "predictions",
                                     platform + "_" + subfield + ".tiff",
                                 ),
@@ -506,7 +504,7 @@ def multipleIoUThresh(
                             io.imsave(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}",
+                                    f"{IoU_thresh}_IoU_threshold",
                                     "ground_truth",
                                     platform + "_" + subfield + ".tiff",
                                 ),
@@ -562,7 +560,7 @@ def csv_viz_halfIoU(root_dir):
 
     halfIoU_csv_path = os.path.join(root_dir, "F1_halfIoU_csv")
     # creating the output directory if it doesn't already exist
-    halfIoU_viz_dir = os.path.join(root_dir, "halfIoU_visaulization")
+    halfIoU_viz_dir = os.path.join(root_dir, "halfIoU_evaluation")
     if not os.path.exists(halfIoU_viz_dir):
         os.makedirs(halfIoU_viz_dir)
     else:
@@ -595,7 +593,7 @@ def csv_viz_halfIoU(root_dir):
     plt.yticks(np.arange(0.0, 0.85, step=0.2), fontweight="regular",
                fontsize="large")
 
-    halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_viz.png")
+    halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_plot.png")
     # saving plot to output directory
     plt.savefig(halfIoU_viz_path, dpi=500)
 
@@ -616,7 +614,7 @@ def csv_viz_multipleIoU(root_dir):
 
     multipleIoU_csv_path = os.path.join(root_dir, "F1_multipleIoU_csv")
     # creating the output directory if it doesn't already exist
-    multipleIoU_viz_dir = os.path.join(root_dir, "multipleIoU_visaulization")
+    multipleIoU_viz_dir = os.path.join(root_dir, "mutlipleIoU_evaluation")
     if not os.path.exists(multipleIoU_viz_dir):
         os.makedirs(multipleIoU_viz_dir)
     else:
@@ -654,7 +652,7 @@ def csv_viz_multipleIoU(root_dir):
 
     # saving lineplot to output directory
     multipleIoU_viz_path = os.path.join(multipleIoU_viz_dir,
-                                        "multipleIoU_viz.png")
+                                        "multipleIoU_plot.png")
     plt.savefig(multipleIoU_viz_path, dpi=500)
 
     return None
