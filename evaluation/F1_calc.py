@@ -192,6 +192,7 @@ def halfIoUThresh(
 
                     # printing the qualitative images if needed
                     if print_qual_imgs:
+                        print(region)
                         print(platform + "_" + subfield)
                         print("----------------------------------------------")
                     else:

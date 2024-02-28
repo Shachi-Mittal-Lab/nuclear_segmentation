@@ -58,17 +58,17 @@ Qualitatitve, platform vs platform comparison on a zoomed in region of interest 
 | :----: | :-----: | :-----: |
 |Overlay|Overlay||
 | ![Alt text](./imgs/README_figures/Mesmer_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/StarDist_dense2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/overlay_key.png) |
-|Prediction|Prediction|IoU Threshold = 0.2|
+|Precision Mask|Precision Mask|@ IoU Threshold = 0.2|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_pred_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_pred_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/pred_key.png) |
-|Ground Truth|Ground Truth|IoU Threshold = 0.2|
+|Recall Mask|Recall Mask|@ IoU Threshold = 0.2|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_grtr_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_grtr_0.2_35_175_65_65.png) | ![Alt text](./imgs/README_figures/grtr_key.png) |
-| Prediction|Prediction|IoU Threshold = 0.5|
+|Precision Mask|Precision Mask|@ IoU Threshold = 0.5|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_0.5_pred_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_0.5_pred_35_175_65_65.png) | ![Alt text](./imgs/README_figures/pred_key.png) |
-| Ground Truth|Ground Truth|IoU Threshold = 0.5|
+|Recall Mask|Recall Mask|@ IoU Threshold = 0.5|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_0.5_grtr_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_0.5_grtr_35_175_65_65.png) | ![Alt text](./imgs/README_figures/grtr_key.png) |
-| Prediction|Prediction|IoU Threshold = 0.8|
+|Precision Mask|Precision Mask|@ IoU Threshold = 0.8|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_pred_0.8_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_pred_0.8_35_175_65_65.png)| ![Alt text](./imgs/README_figures/pred_key.png) |
-| Ground Truth|Ground Truth|IoU Threshold = 0.8|
+|Recall Mask|Recall Mask|@ IoU Threshold = 0.8|
 | ![Alt text](./imgs/README_figures/Bph2_Mesmer_dense2_grtr_0.8_35_175_65_65.png) | ![Alt text](./imgs/README_figures/Bph2_StarDist_dense2_grtr_0.8_35_175_65_65.png)| ![Alt text](./imgs/README_figures/grtr_key.png) |
 
 
