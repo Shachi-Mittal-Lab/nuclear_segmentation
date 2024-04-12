@@ -24,7 +24,7 @@ def halfIoUThresh(
 
     Parameters
     root_dir: str
-        the file path to the root directory. See the README.md file for details
+        the file path to the root directory. See the evaluation.ipynb file for details
         about the required directory structure to perform the evaluation.
     region_coordinate_dict: dict
         dictionary containing the coordinates of the top-left pixel of each
@@ -230,7 +230,7 @@ def multipleIoUThresh(
 
     Parameters
     root_dir: str
-        the file path to the root directory. See the README.md file for details
+        the file path to the root directory. See the evaluation.ipynb file for details
         about the required directory structure to perform the evaluation.
     region_coordinate_dict: dict
         dictionary containing the coordinates of the top-left pixel of each
@@ -242,7 +242,7 @@ def multipleIoUThresh(
     IoU_thresh_list: list
         list of IoU thresholds for F1-score calculation
     save_qual_imgs: bool
-        whether to save the visualizations of visualizations of true positive,
+        whether to save the visualizations of true positive,
         false positive, and false negative prediction and ground truth nuclei
         for each evaluation subregion for qualitative evaluation.
     print_details: bool
@@ -555,7 +555,7 @@ def csv_viz_halfIoU(root_dir):
 
     Parameters
     root_dir: str
-        the file path to the root directory. See the README.md file for details
+        the file path to the root directory. See the evaluation.ipynb file for details
         about the required directory structure to perform the evaluation.
     """
 
