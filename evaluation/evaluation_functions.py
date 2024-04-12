@@ -63,7 +63,7 @@ def intersection_over_union(ground_truth, prediction):
 # https://github.com/carpenterlab/2019_Caicedo_CytometryA/tree/master
 def F1_score_calculator(platform_img, gr_tr_img, threshold, printing=True):
     """
-    Calculates F1-score, average Hausdorff distance between predicted and
+    Calculates F1-score between predicted and
     ground truth nuclei masks based on a IoU threshold
 
     Parameters
@@ -110,7 +110,7 @@ def F1_score_calculator(platform_img, gr_tr_img, threshold, printing=True):
         platform_img.shape == gr_tr_img.shape
     ), "Input images do not have the same dimensions"
 
-    # Adding nuclei labels because inputa are binary
+    # Adding nuclei labels because inputs are binary
     platform_img_labels = skimage.morphology.label(platform_img)
     gr_tr_img_labels = skimage.morphology.label(gr_tr_img)
     gr_tr_img_labels = skimage.segmentation.relabel_sequential(
@@ -130,17 +130,23 @@ def F1_score_calculator(platform_img, gr_tr_img, threshold, printing=True):
     # with IOU thresholds < 0.5
     # Maximum IOU highlighted for each ground truth nucleus
     max_IOU_perGT = np.max(IOU, axis=1)
+    
     # The predicted nucleus with the max IOU for each ground truth nucleus
     max_predictionID = np.argmax(IOU, axis=1)
+    
     # initializing IOU matrix
     max_IOU_perGT_array = np.zeros_like(IOU)
+    
     # Number of ground truth nuclei
     rows = np.arange(IOU.shape[0])
+    
     # IOU matrix with only one true positive prediction match per GT
     max_IOU_perGT_array[rows, max_predictionID] = max_IOU_perGT
+    
     # The GT nucleus with the max IOU for each prediction
     max_GT_ID = np.argmax(max_IOU_perGT_array, axis=0)
     # Getting the final matches array
+    
     nonzero_predictions = np.any(max_IOU_perGT_array != 0, axis=0)
     matches = np.zeros_like(max_IOU_perGT_array, dtype=bool)
     matches[:, nonzero_predictions] = (
@@ -174,11 +180,13 @@ def F1_score_calculator(platform_img, gr_tr_img, threshold, printing=True):
     # calculates F1 score for a particular platform mask relative to the input
     # ground truth mask
     f1 = 2 * TP / (2 * TP + FP + FN + 1e-9)
+    
     # Printing the F1-score if needed
     if printing:
         print(f"F1-score:{f1}")
     else:
         pass
+
     # number of predicted nuclei
     nuclei_count = TP + FP
 
