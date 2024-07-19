@@ -1,3 +1,9 @@
+# line 58 print statement added
+# line 95 to make it a black & white binary mask
+# line 305 to make it a black & white binary mask
+# line 644
+
+
 import os
 import skimage.io as io
 import pandas as pd
@@ -14,7 +20,7 @@ sns.set_style("whitegrid")
 
 def halfIoUThresh(
         root_dir, regions_coordinate_dict, platforms_list,
-        save_qual_imgs=False, print_qual_imgs=False):
+         gr_tr_fname = "gr_tr.tiff", save_qual_imgs=False, print_qual_imgs=False):
     """
     Produces csv files containing F1-scores for quantitative evaluation.
     Optionally produces visualizations of predicted nuclei overlaid on ground
@@ -30,6 +36,8 @@ def halfIoUThresh(
         dictionary containing the coordinates of the top-left pixel of each
         evaluation subregion from each whole slide image. See evaluation.ipynb
         notebook for an example.
+    gr_tr_fname: str
+        name of the ground truth tiff file in every directory e.g. "grtr.tiff"
     platform_list: list
         list of strings containing the name of the segmentation platforms being
         evaluated
@@ -52,8 +60,10 @@ def halfIoUThresh(
         else:
             pass
 
+    total_gr_tr_nuclei = []
     # iterating over all WSI fields
     for region in regions_list:
+        print(region)
         # getting file paths for platforms and ground truth binary masks
         platforms_dir_path = os.path.join(regions_dir_path, region,
                                           "Platforms")
@@ -70,21 +80,16 @@ def halfIoUThresh(
 
         # reading the ground truth binary masks
         gr_tr_sparse1 = io.imread(os.path.join(gr_tr_dir_path,
-                                               "gr_tr_sparse1.tiff"))
-        gr_tr_sparse2 = io.imread(os.path.join(gr_tr_dir_path,
-                                               "gr_tr_sparse2.tiff"))
-        gr_tr_dense1 = io.imread(os.path.join(gr_tr_dir_path,
-                                              "gr_tr_dense1.tiff"))
-        gr_tr_dense2 = io.imread(os.path.join(gr_tr_dir_path,
-                                              "gr_tr_dense2.tiff"))
+                                               gr_tr_fname))
+        # Getting the size of the ground truth array (sampled evaluation ROI) in pixels
+        ROI_size_px = gr_tr_sparse1.shape
 
         # creating a dictionary with the ground truth binary masks
         gr_tr_mask_dict = {
             "sparse1": gr_tr_sparse1,
-            "sparse2": gr_tr_sparse2,
-            "dense1": gr_tr_dense1,
-            "dense2": gr_tr_dense2,
         }
+
+        gr_tr_sparse1[gr_tr_sparse1 != 0] = 255
 
         # this dictionary will be populated with subfield names and their
         # associated F1 scores for each platform
@@ -94,117 +99,112 @@ def halfIoUThresh(
 
         # initializing the ground truth nuclei count to be incremented
         gr_tr_nuclei_count = []
-        # iterating over all 4 subfields
-        for subfield in gr_tr_mask_dict.keys():
-            # iterating over each platform's binary mask
-            for img in os.listdir(platforms_dir_path):
-                # processes only tiff files
-                if img[-5:] == ".tiff" or img[-4:] == ".tif":
-                    platform_whole_img = io.imread(
-                        os.path.join(platforms_dir_path, img)
-                    )
-                    platform = img[: img.find(".")]
-                    # adds a new entry in the dictionary for the subfield
-                    # if it is not already added
-                    if subfield not in df_dict_F1["subfield"]:
-                        df_dict_F1["subfield"].append(subfield)
-                    else:
-                        pass
-                    # gets the ground truth mask for the current subfield
-                    gr_tr_img = gr_tr_mask_dict[subfield]
-                    # gets the coordinates for the current subfield
-                    top_left_row = coordinate_dict[subfield][0]
-                    top_left_column = coordinate_dict[subfield][1]
-                    # crops the platform binary mask to isolate the region to
-                    # be evaluated
-                    # the evaluation subregion size is 256 X 256 pixels
-                    platform_img = platform_whole_img[
-                        top_left_row: top_left_row + 256,
-                        top_left_column: top_left_column + 256,
-                    ]
-                    # Not considering nuclei touching the region borders
-                    platform_img = skimage.segmentation.clear_border(
-                        platform_img)
-                    gr_tr_img = skimage.segmentation.clear_border(gr_tr_img)
-                    # creating a ground truth binary mask for visualization
-                    # purposes in white and black
-                    gr_tr_img_show = np.uint8(
-                        np.zeros((gr_tr_img.shape[0], gr_tr_img.shape[1], 3))
-                    )
-                    gr_tr_img_show[gr_tr_img == 255] = [255, 255, 255]
-                    # creating a ground truth binary mask for visualization
-                    # purposes in green and black
-                    platform_img_show = np.uint8(
-                        np.zeros((platform_img.shape[0], platform_img.shape[1],
-                                  3))
-                    )
-                    platform_img_show[platform_img == 255] = [255, 99, 71]
-                    # overlaying the platform over the ground truth binary mask
-                    dst = cv2.addWeighted(
-                        gr_tr_img_show, 0.6, platform_img_show, 0.9, 0
-                    )
-                    dst[np.all(dst == (230, 89, 64), axis=-1)] = (255, 99, 71)
-                    dst[np.all(dst == (255, 242, 217), axis=-1)] = (
-                        255, 203, 203)
-
-                    # for visualization in the notebook
-                    if print_qual_imgs:
-                        plt.imshow(dst)
-                        plt.show()
-                    else:
-                        pass
-                    # to save the overlayed images for qualitative evaluation
-                    if save_qual_imgs:
-                        if not os.path.exists(
-                            os.path.join(root_dir, "qual_imgs", region,
-                                         "overlay_visualization")
-                        ):
-                            os.makedirs(
-                                os.path.join(root_dir, "qual_imgs", region,
-                                             "overlay_visualization")
-                            )
-                        else:
-                            pass
-                        eval_images_halfIoU_path = os.path.join(
-                            os.path.join(root_dir, "qual_imgs", region,
-                                         "overlay_visualization")
-                        )
-                        io.imsave(
-                            os.path.join(
-                                eval_images_halfIoU_path,
-                                platform + "_" + subfield + ".tiff",
-                            ),
-                            dst,
-                            check_contrast=False,
-                        )
-                    else:
-                        pass
-
-                    # calculating the F1-score of the current platform subfield
-                    (
-                        F1,
-                        nuclei_count,
-                        cur_gr_tr_nuclei_count,
-                        matches,
-                    ) = F1_score_calculator(
-                        platform_img, gr_tr_img, 0.5, print_qual_imgs
-                    )
-
-                    # printing the qualitative images if needed
-                    if print_qual_imgs:
-                        print(region)
-                        print(platform + "_" + subfield)
-                        print("----------------------------------------------")
-                    else:
-                        pass
-                    # Adding the F1-score to the F1-score dictionary
-                    df_dict_F1[platform].append(F1)
+        # iterating over each platform's binary mask
+        for img in os.listdir(platforms_dir_path):
+            # processes only tiff files
+            if img[-5:] == ".tiff" or img[-4:] == ".tif":
+                platform_whole_img = io.imread(
+                    os.path.join(platforms_dir_path, img)
+                )
+                platform = img[: img.find(".")]
+                # adds a new entry in the dictionary for the subfield
+                # if it is not already added
+                if "ROI" not in df_dict_F1["subfield"]:
+                    df_dict_F1["subfield"].append("ROI")
                 else:
                     pass
-            # updating the ground truth nuclei count for the current subfield
-            gr_tr_nuclei_count.append(cur_gr_tr_nuclei_count)
-        # Adding up the ground truth nuclei in all the subfields
-        gr_tr_nuclei_count = sum(gr_tr_nuclei_count)
+                # gets the ground truth mask for the current subfield
+                gr_tr_img = gr_tr_mask_dict["sparse1"]
+                # gets the coordinates for the current subfield
+                top_left_row = coordinate_dict[0]
+                top_left_column = coordinate_dict[1]
+                # crops the platform binary mask to isolate the region to
+                # be evaluated
+                # the evaluation subregion size
+                platform_img = platform_whole_img[
+                    top_left_row: top_left_row + ROI_size_px[0],
+                    top_left_column: top_left_column + ROI_size_px[1],
+                ]
+                # Not considering nuclei touching the region borders
+                platform_img = skimage.segmentation.clear_border(
+                    platform_img)
+                gr_tr_img = skimage.segmentation.clear_border(gr_tr_img)
+                # creating a ground truth binary mask for visualization
+                # purposes in white and black
+                gr_tr_img_show = np.uint8(
+                    np.zeros((gr_tr_img.shape[0], gr_tr_img.shape[1], 3))
+                )
+                gr_tr_img_show[gr_tr_img == 255] = [255, 255, 255]
+                # creating a ground truth binary mask for visualization
+                # purposes in green and black
+                platform_img_show = np.uint8(
+                    np.zeros((platform_img.shape[0], platform_img.shape[1],
+                                3))
+                )
+                platform_img_show[platform_img == 255] = [255, 99, 71]
+                # overlaying the platform over the ground truth binary mask
+                dst = cv2.addWeighted(
+                    gr_tr_img_show, 0.6, platform_img_show, 0.9, 0
+                )
+                dst[np.all(dst == (230, 89, 64), axis=-1)] = (255, 99, 71)
+                dst[np.all(dst == (255, 242, 217), axis=-1)] = (
+                    255, 203, 203)
+
+                # for visualization in the notebook
+                if print_qual_imgs:
+                    plt.imshow(dst)
+                    plt.show()
+                else:
+                    pass
+                # to save the overlayed images for qualitative evaluation
+                if save_qual_imgs:
+                    if not os.path.exists(
+                        os.path.join(root_dir, "qual_imgs", region,
+                                        "overlay_visualization")
+                    ):
+                        os.makedirs(
+                            os.path.join(root_dir, "qual_imgs", region,
+                                            "overlay_visualization")
+                        )
+                    else:
+                        pass
+                    eval_images_halfIoU_path = os.path.join(
+                        os.path.join(root_dir, "qual_imgs", region,
+                                        "overlay_visualization")
+                    )
+                    io.imsave(
+                        os.path.join(
+                            eval_images_halfIoU_path,
+                            platform + "_" + img + ".tiff",
+                        ),
+                        dst,
+                        check_contrast=False,
+                    )
+                else:
+                    pass
+
+                # calculating the F1-score of the current platform subfield
+                (
+                    F1,
+                    nuclei_count,
+                    cur_gr_tr_nuclei_count,
+                    matches,
+                ) = F1_score_calculator(
+                    platform_img, gr_tr_img, 0.5, print_qual_imgs
+                )
+
+                # printing the qualitative images if needed
+                if print_qual_imgs:
+                    print(region)
+                    print(platform)
+                    print("----------------------------------------------")
+                else:
+                    pass
+                # Adding the F1-score to the F1-score dictionary
+                df_dict_F1[platform].append(F1)
+            else:
+                pass
+        total_gr_tr_nuclei.append(cur_gr_tr_nuclei_count)
 
         # Converting the F1-score dictionary to a dataframe
         df_F1 = pd.DataFrame(df_dict_F1)
@@ -213,12 +213,14 @@ def halfIoUThresh(
         # converting the pandas dataframe to a csv file and saving it
         df_F1.to_csv(os.path.join(F1_halfIoU_csv_path, region + ".csv"))
 
-    return None
+    total_gr_tr_nuclei = sum(total_gr_tr_nuclei)
+
+    return total_gr_tr_nuclei
 
 
 def multipleIoUThresh(
     root_dir, regions_coordinate_dict, platforms_list, IoU_thresh_list,
-    save_qual_imgs=False, print_details=False
+    gr_tr_fname = "gr_tr.tiff", save_qual_imgs=False, print_details=False
 ):
     """
     Produces csv files containing F1-scores for quantitative evaluation.
@@ -236,6 +238,8 @@ def multipleIoUThresh(
         dictionary containing the coordinates of the top-left pixel of each
         evaluation subregion from each whole slide image. See evaluation.ipynb
         notebook for an example.
+    gr_tr_fname: str
+        name of the ground truth tiff file in every directory e.g. "grtr.tiff"
     platform_list: list
         list of strings containing the name of the segmentation platforms being
         evaluated
@@ -282,20 +286,15 @@ def multipleIoUThresh(
 
         # reading the ground truth binary masks
         gr_tr_sparse1 = io.imread(os.path.join(gr_tr_dir_path,
-                                               "gr_tr_sparse1.tiff"))
-        gr_tr_sparse2 = io.imread(os.path.join(gr_tr_dir_path,
-                                               "gr_tr_sparse2.tiff"))
-        gr_tr_dense1 = io.imread(os.path.join(gr_tr_dir_path,
-                                              "gr_tr_dense1.tiff"))
-        gr_tr_dense2 = io.imread(os.path.join(gr_tr_dir_path,
-                                              "gr_tr_dense2.tiff"))
+                                               gr_tr_fname))
+        # Getting the size of the ground truth array (sampled evaluation ROI) in pixels
+        ROI_size_px = gr_tr_sparse1.shape
+
+        gr_tr_sparse1[gr_tr_sparse1 != 0] = 255
 
         # creating a dictionary with the ground truth binary masks
         gr_tr_mask_dict = {
             "sparse1": gr_tr_sparse1,
-            "sparse2": gr_tr_sparse2,
-            "dense1": gr_tr_dense1,
-            "dense2": gr_tr_dense2,
         }
 
         # Initializing the dictionary which will contain the F1-scores
@@ -312,222 +311,221 @@ def multipleIoUThresh(
             for i in platforms_list:
                 df_dict_F1[i] = []
 
-            # iterating over all 4 subfields
-            for subfield in gr_tr_mask_dict.keys():
-                # iterating over each platform's binary mask
-                for img in os.listdir(platforms_dir_path):
-                    # only processed tiff files
-                    if img[-5:] == ".tiff" or img[-4:] == ".tif":
-                        platform_whole_img = io.imread(
-                            os.path.join(platforms_dir_path, img)
-                        )
-                        platform = img[: img.find(".")]
-                        # adds a new entry in the dictionary for the subfield
-                        # if it is not already added
-                        if subfield not in df_dict_F1["subfield"]:
-                            df_dict_F1["subfield"].append(subfield)
-                        else:
-                            pass
-                        # gets the ground truth mask for the current subfield
-                        gr_tr_img = gr_tr_mask_dict[subfield]
-                        # gets the coordinates for the current subfield
-                        top_left_row = coordinate_dict[subfield][0]
-                        top_left_column = coordinate_dict[subfield][1]
-                        # crops the platform binary mask to isolate the region
-                        # to be evaluated
-                        # Evaluation subregions are 256 X 256 pixels
-                        platform_img = platform_whole_img[
-                            top_left_row: top_left_row + 256,
-                            top_left_column: top_left_column + 256,
-                        ]
-                        # Not considering nuclei touching the region borders
-                        platform_img = skimage.segmentation.clear_border(
-                            platform_img)
-                        gr_tr_img = skimage.segmentation.clear_border(
-                            gr_tr_img)
-                        # creating label arrays from binary data for
-                        # predictions and ground truth
-                        platform_img_labels = skimage.morphology.label(
-                            platform_img)
-                        gr_tr_img_labels = skimage.morphology.label(gr_tr_img)
-                        gr_tr_img_labels = skimage.segmentation.relabel_sequential(gr_tr_img_labels)[0]
-                        platform_img_labels = skimage.segmentation.relabel_sequential(platform_img_labels)[0]
+            # iterating over each platform's binary mask
+            for img in os.listdir(platforms_dir_path):
+                # only processed tiff files
+                if img[-5:] == ".tiff" or img[-4:] == ".tif":
+                    platform_whole_img = io.imread(
+                        os.path.join(platforms_dir_path, img)
+                    )
+                    platform = img[: img.find(".")]
+                    # adds a new entry in the dictionary for the subfield
+                    # if it is not already added
+                    if "ROI" not in df_dict_F1["subfield"]:
+                        df_dict_F1["subfield"].append("ROI")
+                    else:
+                        pass
+                    # gets the ground truth mask for the current subfield
+                    gr_tr_img = gr_tr_mask_dict["sparse1"]
+                    # gets the coordinates for the current subfield
+                    top_left_row = coordinate_dict[0]
+                    top_left_column = coordinate_dict[1]
+                    # crops the platform binary mask to isolate the region
+                    # to be evaluated
+                    # Evaluation subregions size
+                    platform_img = platform_whole_img[
+                        top_left_row: top_left_row + ROI_size_px[0],
+                        top_left_column: top_left_column + ROI_size_px[1],
+                    ]
+                    # Not considering nuclei touching the region borders
+                    platform_img = skimage.segmentation.clear_border(
+                        platform_img)
+                    gr_tr_img = skimage.segmentation.clear_border(
+                        gr_tr_img)
+                    # creating label arrays from binary data for
+                    # predictions and ground truth
+                    platform_img_labels = skimage.morphology.label(
+                        platform_img)
+                    gr_tr_img_labels = skimage.morphology.label(gr_tr_img)
+                    gr_tr_img_labels = skimage.segmentation.relabel_sequential(gr_tr_img_labels)[0]
+                    platform_img_labels = skimage.segmentation.relabel_sequential(platform_img_labels)[0]
 
-                        # couting the number of predicted and ground truth
-                        # nuclei
-                        true_objects = len(np.unique(gr_tr_img_labels))
-                        pred_objects = len(np.unique(platform_img_labels))
+                    # couting the number of predicted and ground truth
+                    # nuclei
+                    true_objects = len(np.unique(gr_tr_img_labels))
+                    pred_objects = len(np.unique(platform_img_labels))
 
-                        # calculating the F1-score of the current platform
-                        # subfield at the current IoU threshold
-                        (
-                            F1,
-                            nuclei_count,
-                            cur_gr_tr_nuclei_count,
-                            matches,
-                        ) = F1_score_calculator(
-                            platform_img, gr_tr_img, IoU_thresh,
-                            printing=print_details)
-                        # to save the qualitative images for qualitative
-                        # evaluation
-                        # Creating outpute directories if they don't already
-                        # exist
-                        if save_qual_imgs:
-                            if not os.path.exists(
-                                os.path.join(
-                                    root_dir, "qual_imgs", region,
-                                    "F1_visualization"
-                                )
-                            ):
-                                os.makedirs(
-                                    os.path.join(
-                                        root_dir, "qual_imgs", region,
-                                        "F1_visualization"
-                                    )
-                                )
-                            else:
-                                pass
-                            eval_images_multipleIoU_path = os.path.join(
+                    # calculating the F1-score of the current platform
+                    # subfield at the current IoU threshold
+                    (
+                        F1,
+                        nuclei_count,
+                        cur_gr_tr_nuclei_count,
+                        matches,
+                    ) = F1_score_calculator(
+                        platform_img, gr_tr_img, IoU_thresh,
+                        printing=print_details)
+                    # to save the qualitative images for qualitative
+                    # evaluation
+                    # Creating outpute directories if they don't already
+                    # exist
+                    if save_qual_imgs:
+                        if not os.path.exists(
+                            os.path.join(
+                                root_dir, "qual_imgs", region,
+                                "F1_visualization"
+                            )
+                        ):
+                            os.makedirs(
                                 os.path.join(
                                     root_dir, "qual_imgs", region,
                                     "F1_visualization"
                                 )
                             )
+                        else:
+                            pass
+                        eval_images_multipleIoU_path = os.path.join(
+                            os.path.join(
+                                root_dir, "qual_imgs", region,
+                                "F1_visualization"
+                            )
+                        )
 
-                            if not os.path.exists(
+                        if not os.path.exists(
+                            os.path.join(
+                                eval_images_multipleIoU_path,
+                                f"{IoU_thresh}_IoU_threshold"
+                            )
+                        ):
+                            # Create the directory
+                            os.makedirs(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
                                     f"{IoU_thresh}_IoU_threshold"
                                 )
-                            ):
-                                # Create the directory
-                                os.makedirs(
-                                    os.path.join(
-                                        eval_images_multipleIoU_path,
-                                        f"{IoU_thresh}_IoU_threshold"
-                                    )
-                                )
-                            else:
-                                pass
-                            if not os.path.exists(
+                            )
+                        else:
+                            pass
+                        if not os.path.exists(
+                            os.path.join(
+                                eval_images_multipleIoU_path,
+                                f"{IoU_thresh}_IoU_threshold",
+                                "ground_truth",
+                            )
+                        ):
+                            # Create the directory
+                            os.makedirs(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
                                     f"{IoU_thresh}_IoU_threshold",
                                     "ground_truth",
                                 )
-                            ):
-                                # Create the directory
-                                os.makedirs(
-                                    os.path.join(
-                                        eval_images_multipleIoU_path,
-                                        f"{IoU_thresh}_IoU_threshold",
-                                        "ground_truth",
-                                    )
-                                )
-                            else:
-                                pass
-                            if not os.path.exists(
+                            )
+                        else:
+                            pass
+                        if not os.path.exists(
+                            os.path.join(
+                                eval_images_multipleIoU_path,
+                                f"{IoU_thresh}_IoU_threshold",
+                                "predictions",
+                            )
+                        ):
+                            # Create the directory
+                            os.makedirs(
                                 os.path.join(
                                     eval_images_multipleIoU_path,
                                     f"{IoU_thresh}_IoU_threshold",
                                     "predictions",
                                 )
-                            ):
-                                # Create the directory
-                                os.makedirs(
-                                    os.path.join(
-                                        eval_images_multipleIoU_path,
-                                        f"{IoU_thresh}_IoU_threshold",
-                                        "predictions",
-                                    )
-                                )
-                            else:
-                                pass
-
-                            # finding true positives in ground truth
-                            TP_grtr = np.any(matches, axis=1)
-                            TP_grtr_IDs = np.array(
-                                range(1, true_objects))[TP_grtr]
-                            TP_grtr_mask = np.isin(gr_tr_img_labels,
-                                                   TP_grtr_IDs)
-                            # finding false negatives in ground truth
-                            FN_grtr = ~np.any(matches, axis=1)
-                            FN_grtr_IDs = np.array(
-                                range(1, true_objects))[FN_grtr]
-                            FN_grtr_mask = np.isin(
-                                gr_tr_img_labels, FN_grtr_IDs)
-                            # finding true positives in predictions
-                            TP_pred = np.any(matches, axis=0)
-                            TP_pred_IDs = np.array(
-                                range(1, pred_objects))[TP_pred]
-                            TP_pred_mask = np.isin(
-                                platform_img_labels, TP_pred_IDs)
-                            # finding false positives in predictions
-                            FP_pred = ~np.any(matches, axis=0)
-                            FP_pred_IDs = np.array(
-                                range(1, pred_objects))[FP_pred]
-                            FP_pred_mask = np.isin(
-                                platform_img_labels, FP_pred_IDs)
-
-                            # initializing array for qualitative evaluation of
-                            # predictions
-                            pred_viz = np.zeros(
-                                (platform_img.shape[0], platform_img.shape[1],
-                                 3),
-                                dtype=np.uint8,
                             )
-                            # making true positive green and false positive red
-                            # for the predictions
-                            pred_viz[TP_pred_mask, :] = [0, 255, 0]
-                            pred_viz[FP_pred_mask, :] = [255, 0, 0]
-                            # initializing array for qualitative evaluation of
-                            # ground truth
-                            grtr_viz = np.zeros(
-                                (gr_tr_img.shape[0], gr_tr_img.shape[1], 3),
-                                dtype=np.uint8,
-                            )
-                            # making true positive green and false positive
-                            # orange for the ground truth nuclei
-                            grtr_viz[TP_grtr_mask, :] = [0, 255, 0]
-                            grtr_viz[FN_grtr_mask, :] = [253, 127, 57]
-
-                            # saving the qualitative visualizations
-                            io.imsave(
-                                os.path.join(
-                                    eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}_IoU_threshold",
-                                    "predictions",
-                                    platform + "_" + subfield + ".tiff",
-                                ),
-                                pred_viz,
-                                check_contrast=False,
-                            )
-                            io.imsave(
-                                os.path.join(
-                                    eval_images_multipleIoU_path,
-                                    f"{IoU_thresh}_IoU_threshold",
-                                    "ground_truth",
-                                    platform + "_" + subfield + ".tiff",
-                                ),
-                                grtr_viz,
-                                check_contrast=False,
-                            )
-
                         else:
                             pass
 
-                        # printing details if required
-                        if print_details:
-                            print(region + " " + platform + "_" + subfield)
-                            print(f"IoU threshold: {IoU_thresh}")
-                            print("***")
-                        else:
-                            pass
+                        # finding true positives in ground truth
+                        TP_grtr = np.any(matches, axis=1)
+                        TP_grtr_IDs = np.array(
+                            range(1, true_objects))[TP_grtr]
+                        TP_grtr_mask = np.isin(gr_tr_img_labels,
+                                                TP_grtr_IDs)
+                        # finding false negatives in ground truth
+                        FN_grtr = ~np.any(matches, axis=1)
+                        FN_grtr_IDs = np.array(
+                            range(1, true_objects))[FN_grtr]
+                        FN_grtr_mask = np.isin(
+                            gr_tr_img_labels, FN_grtr_IDs)
+                        # finding true positives in predictions
+                        TP_pred = np.any(matches, axis=0)
+                        TP_pred_IDs = np.array(
+                            range(1, pred_objects))[TP_pred]
+                        TP_pred_mask = np.isin(
+                            platform_img_labels, TP_pred_IDs)
+                        # finding false positives in predictions
+                        FP_pred = ~np.any(matches, axis=0)
+                        FP_pred_IDs = np.array(
+                            range(1, pred_objects))[FP_pred]
+                        FP_pred_mask = np.isin(
+                            platform_img_labels, FP_pred_IDs)
 
-                        # Adding the F1-score to the F1-score dictionary
-                        df_dict_F1[platform].append(F1)
+                        # initializing array for qualitative evaluation of
+                        # predictions
+                        pred_viz = np.zeros(
+                            (platform_img.shape[0], platform_img.shape[1],
+                                3),
+                            dtype=np.uint8,
+                        )
+                        # making true positive green and false positive red
+                        # for the predictions
+                        pred_viz[TP_pred_mask, :] = [0, 255, 0]
+                        pred_viz[FP_pred_mask, :] = [255, 0, 0]
+                        # initializing array for qualitative evaluation of
+                        # ground truth
+                        grtr_viz = np.zeros(
+                            (gr_tr_img.shape[0], gr_tr_img.shape[1], 3),
+                            dtype=np.uint8,
+                        )
+                        # making true positive green and false positive
+                        # orange for the ground truth nuclei
+                        grtr_viz[TP_grtr_mask, :] = [0, 255, 0]
+                        grtr_viz[FN_grtr_mask, :] = [253, 127, 57]
+
+                        # saving the qualitative visualizations
+                        io.imsave(
+                            os.path.join(
+                                eval_images_multipleIoU_path,
+                                f"{IoU_thresh}_IoU_threshold",
+                                "predictions",
+                                platform + "_" + img + ".tiff",
+                            ),
+                            pred_viz,
+                            check_contrast=False,
+                        )
+                        io.imsave(
+                            os.path.join(
+                                eval_images_multipleIoU_path,
+                                f"{IoU_thresh}_IoU_threshold",
+                                "ground_truth",
+                                platform + "_" + img + ".tiff",
+                            ),
+                            grtr_viz,
+                            check_contrast=False,
+                        )
+
                     else:
                         pass
+
+                    # printing details if required
+                    if print_details:
+                        print(region)
+                        print(platform)
+                        print(f"IoU threshold: {IoU_thresh}")
+                        print("***")
+                    else:
+                        pass
+
+                    # Adding the F1-score to the F1-score dictionary
+                    df_dict_F1[platform].append(F1)
+                else:
+                    pass
             # Converting the F1-score dictionary to a dataframe
             df_F1 = pd.DataFrame(df_dict_F1)
             # Setting the index to be the subfield name
@@ -578,21 +576,22 @@ def csv_viz_halfIoU(root_dir):
     ### combined_halfIoU_df = combined_halfIoU_df.rename(
     ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
 
+    plt.figure(figsize=(4,5))
     # creating barplot with 95% confidence interval and formatting
     F1_barplot_combined = sns.barplot(combined_halfIoU_df, errorbar="ci")
     F1_barplot_combined.set_xlabel(
-        xlabel="Segmentation Platform", fontweight="bold", fontsize="large"
+        xlabel="Segmentation Platform", fontweight="bold", fontsize=16
     )
     F1_barplot_combined.set_ylabel(
-        ylabel="F1-score", fontweight="bold", fontsize="large"
+        ylabel="F1-score", fontweight="bold", fontsize=16
     )
     F1_barplot_combined.set_title(
         label="F1-score (IoU Threshold = 0.5)", fontweight="bold",
         fontsize="x-large"
     )
-    plt.xticks(fontweight="regular", fontsize="large")
+    plt.xticks(fontweight="regular", fontsize=15)
     plt.yticks(np.arange(0.0, 0.85, step=0.2), fontweight="regular",
-               fontsize="large")
+               fontsize=15)
 
     halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_plot.png")
     # saving plot to output directory
