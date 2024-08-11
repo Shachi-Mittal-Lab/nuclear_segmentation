@@ -85,7 +85,7 @@ IoU Threshold=0.5 | Varying IoU Thresholds
 ![Alt text](./imgs/README_figures/external_bar.png) | ![Alt text](./imgs/README_figures//external_line.png)
 
 
-Brief description of the 7 platforms above:
+Brief description of some of the platforms above:
 
 
 - <b>CellProfiler</b> is an open-source system for flexible and varying modes of cell-based image analysis. Nuclear segmentation in CellProfiler is performed by classical techniques of thresholding followed by object detection, including algorithms for declumping nuclei that are touching via watershed. Our Fiji pipeline is similar to another multiplex study that performs segmentation on DAPI images.
