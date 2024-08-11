@@ -73,7 +73,29 @@ Qualitatitve, platform vs platform comparison on a zoomed in region of interest 
 
 
 
-Quantitative comparison over evaluation subregions from multiple regions from different whole slide images of a dataset:
+Quantitative comparison of 7 nuclear segmentation platforms over 20 evaluation ROIs, 3 tissue types (melanoma, tonsil, breast), 3967 nuclei on our in-house development dataset:
 IoU Threshold=0.5 | Varying IoU Thresholds
 :---: | :---:
-![Alt text](./imgs/README_figures/halfIoU.png) | ![Alt text](./imgs/README_figures//multipleIoU.png)
+![Alt text](./imgs/README_figures/inhouse_bar.png) | ![Alt text](./imgs/README_figures//inhouse_line.png)
+
+
+Quantitative comparison of pre-trained deep learning models over 40 evaluation ROIs, 6 tissue types (lung, breast, pancreas, colon, skin, tongue), 16197 nuclei on an external dataset for benchmarking:
+IoU Threshold=0.5 | Varying IoU Thresholds
+:---: | :---:
+![Alt text](./imgs/README_figures/external_bar.png) | ![Alt text](./imgs/README_figures//external_line.png)
+
+
+Brief description of the 7 platforms above:
+
+
+- <b>CellProfiler</b> is an open-source system for flexible and varying modes of cell-based image analysis. Nuclear segmentation in CellProfiler is performed by classical techniques of thresholding followed by object detection, including algorithms for declumping nuclei that are touching via watershed. Our Fiji pipeline is similar to another multiplex study that performs segmentation on DAPI images.
+
+
+- <b>QuPath</b> is an open-source bioimage analysis software designed for digital pathology and whole slide image analysis. It offers algorithms that provide in-built solutions to various workflows, including cell segmentation. QuPath’s cell detection algorithm is an intricate, custom one that uses ImageJ as a library for standard image processing operations like thresholding, watershed, and morphological reconstructions.
+
+- <b>StarDist</b> is a deep learning-based open-source cell detection algorithm that predicts star-convex polygons as a shape representation for nuclei. It uses a lightweight neural network based on the U-Net architecture.  StarDist computes object probabilities and star-convex polygon distances as the normalized Euclidean distance to the nearest background pixel. Pixels with sufficiently high probabilities are considered nuclei, while those without are assigned as background. For every pixel assigned as a nucleus, Euclidean distances in 32 radial directions to pixels with a different object identity (nucleus boundary) are regressed. It is worth noting that StarDist loses pixel-level localization accuracy near object boundaries since the model is only based on 32 radial directions.
+
+- <b>Cellpose</b> is a deep learning-based open-source nuclear segmentation package that predicts horizontal and vertical gradients within a cell from which vector fields can be calculated. Cellpose also uses a neural network based on the U-Net architecture. Cellpose predicts binary maps, indicating if a given pixel is a nucleus or background. All pixels can be routed to the center of their respective cell by following the vector fields using a process called gradient tracking. The algorithm then identifies distinct cells and their precise shapes by grouping together pixels that converge to the same point. Cell shape is further refined by excluding pixels according to the binary map generated. While both platforms are based on U-Net, StarDist has an additional 3×3 convolutional layer with 128 channels and relu activations after the final U-Net feature layer, and Cellpose uses a modified U-Net architecture with the standard building blocks replaced by residual blocks with double the network depth.
+
+- <b>Mesmer</b> is a deep learning-based open-source cell segmentation pipeline that predicts centroid and boundary pixels of nuclei followed by a watershed algorithm. Mesmer also uses membrane or cytoplasm markers to segment whole cells as a more accurate alternative to pixel expansion of nuclear masks, which is commonly the case. The model architecture contains a ResNet50 backbone coupled to a Feature Pyramid Network that has four prediction heads (two for nuclear and two for whole-cell segmentation) at the top of the pyramid. Mesmer was trained on TissueNet, a database with 1.2 million nuclear annotations from a variety of imaging platforms, tissue types, and species.  
+
