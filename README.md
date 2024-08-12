@@ -48,8 +48,6 @@ The evaluation step comes after segmentation and generation of nuclear binary ma
 
 <b>3.3. Results</b>
 
-The following types of evaluations can be achieved with the pipeline in this repository:
-
 Qualitatitve, platform vs platform comparison on a zoomed in region of interest of a single evaluation sub-region:
 |Mesmer|StarDist|Key|
 | :----: | :-----: | :-----: |
