@@ -1,4 +1,0 @@
-Top-left coordinates of the 256X256 subfields:
-
-coordinate_dict = {'sparse1': (0, 1378),'dense1': (434, 691),
-'sparse2': (1092, 231), 'dense2': (704, 939)}
