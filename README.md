@@ -5,7 +5,7 @@
 * 3\. Usage
     * 3.1\. Segmenatation
     * 3.2\. Evaluation
-    * 3.3\. Imgs
+    * 3.3\. Results
 
 
 ## 1. ABOUT ##
@@ -46,10 +46,7 @@ The first step is to perform nuclear segmentation using the DAPI channel of some
 
 The evaluation step comes after segmentation and generation of nuclear binary masks. The next step is the ground truth creation for evaluation. Guidance for this is in the `evaluation.ipynb` notebook. The notebook also outlines the recommended file structre for storing platform-derived and ground truth binary nuclear masks for compatibility with the evaluation code. The ground truth annotations of evaluation subfields for the data used in our paper as well as the coordinates of the subfields in the overall field are available in `imgs/ground_truth_masks_coordinates`. `evaluation.ipynb` produces csv files which contain F1-scores at varying IoU thresholds for each evaluatory subregion from all the regions under analysis. `evaluation.ipynb` can then be used to produce visualizations of quantitative evaluation and comparison of segmentation performace between platforms. `evaluation.ipynb` can also be used for qualitative evaluation visualizations. Conclusions can then be drawn about which platform to proceed with for the entire dataset.
 
-<b>3.3. Imgs</b>
-
-We have also provided the grayscaled DAPI channels for some sample fields along with information about their tissue type in `imgs/DAPI_grayscale`. Additionally, we have coordinates for four evaluation sub-fields as well as their ground truth annotations for each of the sample field in `imgs/DAPI_grayscale/ground_truth_masks_coordinates`. These data can be used to test out the segmentation and evaluation pipelines in this repository.
-
+<b>3.3. Results</b>
 
 The following types of evaluations can be achieved with the pipeline in this repository:
 
