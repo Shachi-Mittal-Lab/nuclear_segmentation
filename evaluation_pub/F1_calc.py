@@ -627,7 +627,7 @@ def csv_viz_halfIoU(root_dir):
     ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
     plt.figure(figsize=(4,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, errorbar="ci")
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -639,11 +639,11 @@ def csv_viz_halfIoU(root_dir):
         fontsize="x-large"
     )
     plt.xticks(fontweight="regular", fontsize=15)
-    plt.yticks(np.arange(0.0, 1.1, step=0.2), fontweight="regular",
+    plt.yticks(np.arange(0.0, 1.01, step=0.2), fontweight="regular",
                fontsize=15)
     halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_F1_plot.png")
     # saving plot to output directory
-    plt.savefig(halfIoU_viz_path, dpi=500)
+    plt.savefig(halfIoU_viz_path, dpi=500, bbox_inches='tight')
 
     # RECALL Plot
     # Appending the dataframes of each field into a list
@@ -657,7 +657,7 @@ def csv_viz_halfIoU(root_dir):
     ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
     plt.figure(figsize=(4,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, errorbar="ci")
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -669,11 +669,11 @@ def csv_viz_halfIoU(root_dir):
         fontsize="x-large"
     )
     plt.xticks(fontweight="regular", fontsize=15)
-    plt.yticks(np.arange(0.0, 1.1, step=0.2), fontweight="regular",
+    plt.yticks(np.arange(0.0, 1.01, step=0.2), fontweight="regular",
                fontsize=15)
     halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_Recall_plot.png")
     # saving plot to output directory
-    plt.savefig(halfIoU_viz_path, dpi=500)
+    plt.savefig(halfIoU_viz_path, dpi=500, bbox_inches='tight')
 
    # PRECISION Plot
     # Appending the dataframes of each field into a list
@@ -687,7 +687,7 @@ def csv_viz_halfIoU(root_dir):
     ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
     plt.figure(figsize=(4,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, errorbar="ci")
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -699,11 +699,11 @@ def csv_viz_halfIoU(root_dir):
         fontsize="x-large"
     )
     plt.xticks(fontweight="regular", fontsize=15)
-    plt.yticks(np.arange(0.0, 1.1, step=0.2), fontweight="regular",
+    plt.yticks(np.arange(0.0, 1.01, step=0.2), fontweight="regular",
                fontsize=15)
     halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_Precision_plot.png")
     # saving plot to output directory
-    plt.savefig(halfIoU_viz_path, dpi=500)
+    plt.savefig(halfIoU_viz_path, dpi=500, bbox_inches='tight')
 
     # JACCARD INDEX Plot
     # Appending the dataframes of each field into a list
@@ -717,7 +717,7 @@ def csv_viz_halfIoU(root_dir):
     ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
     plt.figure(figsize=(4,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, errorbar="ci")
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -729,11 +729,11 @@ def csv_viz_halfIoU(root_dir):
         fontsize="x-large"
     )
     plt.xticks(fontweight="regular", fontsize=15)
-    plt.yticks(np.arange(0.0, 1.1, step=0.2), fontweight="regular",
+    plt.yticks(np.arange(0.0, 1.01, step=0.2), fontweight="regular",
                fontsize=15)
     halfIoU_viz_path = os.path.join(halfIoU_viz_dir, "halfIoU_Jaccard_plot.png")
     # saving plot to output directory
-    plt.savefig(halfIoU_viz_path, dpi=500)
+    plt.savefig(halfIoU_viz_path, dpi=500, bbox_inches='tight')
 
 
     return None
@@ -771,7 +771,7 @@ def csv_viz_multipleIoU(root_dir):
     combined_multipleIoU_df = combined_multipleIoU_df.set_index("Unnamed: 0")
     # creating lineplot and formatting
     combined_F1_lineplot = sns.lineplot(
-        data=combined_multipleIoU_df, dashes=False, markers="s", legend=True
+        data=combined_multipleIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], dashes=False, markers={'Mesmer':"o", 'Cellpose':"s", 'StarDist':"X"}, markersize=10, legend=False
     )
     combined_F1_lineplot.set_xlabel(
         xlabel="IoU Threshold", fontweight="bold", fontsize="large"
@@ -786,12 +786,12 @@ def csv_viz_multipleIoU(root_dir):
     )
     plt.xticks(np.arange(0, 0.95, step=0.2), fontweight="regular",
                fontsize="large")
-    plt.yticks(np.arange(0, 0.85, step=0.1), fontweight="regular",
+    plt.yticks(np.arange(0, 1.01, step=0.1), fontweight="regular",
                fontsize="large")
 
     # saving lineplot to output directory
     multipleIoU_viz_path = os.path.join(multipleIoU_viz_dir,
                                         "multipleIoU_plot.png")
-    plt.savefig(multipleIoU_viz_path, dpi=500)
+    plt.savefig(multipleIoU_viz_path, dpi=500, bbox_inches='tight')
 
     return None
