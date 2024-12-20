@@ -13,8 +13,8 @@ import skimage.segmentation
 import cv2
 import matplotlib.pyplot as plt
 import seaborn as sns
-from evaluation_functions import F1_score_calculator
 import json
+from evaluation_functions import F1_score_calculator
 
 sns.set_style("whitegrid")
 
@@ -624,11 +624,11 @@ def csv_viz_halfIoU(root_dir):
                                                         csv_file)))
     # Concatenating the dataframes into one big dataframe
     combined_halfIoU_df = pd.concat(halfIoU_df_list)
-    ### combined_halfIoU_df = combined_halfIoU_df.rename(
-    ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
-    plt.figure(figsize=(4,5))
+    combined_halfIoU_df = combined_halfIoU_df.rename(
+        columns={"CellPose": "Cellpose", "InForm": "inForm®"})
+    plt.figure(figsize=(8,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#3274a1', '#e1812c', '#3a923a', '#c03d3e', '#9372b2', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -654,11 +654,11 @@ def csv_viz_halfIoU(root_dir):
                                                         csv_file)))
     # Concatenating the dataframes into one big dataframe
     combined_halfIoU_df = pd.concat(halfIoU_df_list)
-    ### combined_halfIoU_df = combined_halfIoU_df.rename(
-    ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
-    plt.figure(figsize=(4,5))
+    combined_halfIoU_df = combined_halfIoU_df.rename(
+        columns={"CellPose": "Cellpose", "InForm": "inForm®"})
+    plt.figure(figsize=(8,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#3274a1', '#e1812c', '#3a923a', '#c03d3e', '#9372b2', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -684,11 +684,11 @@ def csv_viz_halfIoU(root_dir):
                                                         csv_file)))
     # Concatenating the dataframes into one big dataframe
     combined_halfIoU_df = pd.concat(halfIoU_df_list)
-    ### combined_halfIoU_df = combined_halfIoU_df.rename(
-    ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
-    plt.figure(figsize=(4,5))
+    combined_halfIoU_df = combined_halfIoU_df.rename(
+        columns={"CellPose": "Cellpose", "InForm": "inForm®"})
+    plt.figure(figsize=(8,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#3274a1', '#e1812c', '#3a923a', '#c03d3e', '#9372b2', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -714,11 +714,11 @@ def csv_viz_halfIoU(root_dir):
                                                         csv_file)))
     # Concatenating the dataframes into one big dataframe
     combined_halfIoU_df = pd.concat(halfIoU_df_list)
-    ### combined_halfIoU_df = combined_halfIoU_df.rename(
-    ###     columns={"CellPose": "Cellpose", "InForm": "inForm®"})
-    plt.figure(figsize=(4,5))
+    combined_halfIoU_df = combined_halfIoU_df.rename(
+        columns={"CellPose": "Cellpose", "InForm": "inForm®"})
+    plt.figure(figsize=(8,5))
     # creating barplot with 95% confidence interval and formatting
-    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
+    F1_barplot_combined = sns.barplot(combined_halfIoU_df, palette=['#3274a1', '#e1812c', '#3a923a', '#c03d3e', '#9372b2', '#845b53', '#d684bd'], errorbar="ci", capsize=0.2)
     F1_barplot_combined.set_xlabel(
         xlabel="Segmentation Algorithm", fontweight="bold", fontsize=16
     )
@@ -770,7 +770,7 @@ def csv_viz_multipleIoU(root_dir):
     combined_multipleIoU_df = sum(multipleIoU_df_list) / len(
         multipleIoU_df_list)
     combined_multipleIoU_df = combined_multipleIoU_df.set_index("Unnamed: 0")
-
+    
     # Calculating AUC
     AUC_dict = {}
     for col in combined_multipleIoU_df.columns:
@@ -784,7 +784,9 @@ def csv_viz_multipleIoU(root_dir):
 
     # creating lineplot and formatting
     combined_F1_lineplot = sns.lineplot(
-        data=combined_multipleIoU_df, palette=['#c03d3e', '#845b53', '#d684bd'], dashes=False, markers={'Mesmer':"o", 'Cellpose':"s", 'StarDist':"X"}, markersize=10, legend=False
+        data=combined_multipleIoU_df, palette=['#3274a1', '#e1812c', '#3a923a', '#c03d3e', '#9372b2', '#845b53', '#d684bd'], dashes=False,
+        markers={'QuPath':"v", 'CellProfiler':"^", 'InForm':"*", 'Fiji':"P", 'Mesmer':"o", 'CellPose':"s", 'StarDist':"X"},
+        markersize=10, legend=False
     )
     combined_F1_lineplot.set_xlabel(
         xlabel="IoU Threshold", fontweight="bold", fontsize="large"
