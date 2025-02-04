@@ -83,7 +83,7 @@ IoU Threshold=0.5 | Varying IoU Thresholds
 Brief description of some of the platforms above:
 
 
-- <b>CellProfiler</b> is an open-source system for flexible and varying modes of cell-based image analysis. Nuclear segmentation in CellProfiler is performed by classical techniques of thresholding followed by object detection, including algorithms for declumping nuclei that are touching via watershed. Our Fiji pipeline is similar to another multiplex study that performs segmentation on DAPI images.
+- <b>CellProfiler</b> is an open-source system for flexible and varying modes of cell-based image analysis. Nuclear segmentation in CellProfiler is performed by classical techniques of thresholding followed by object detection, including algorithms for declumping nuclei that are touching via watershed.
 
 
 - <b>QuPath</b> is an open-source bioimage analysis software designed for digital pathology and whole slide image analysis. It offers algorithms that provide in-built solutions to various workflows, including cell segmentation. QuPath’s cell detection algorithm is an intricate, custom one that uses ImageJ as a library for standard image processing operations like thresholding, watershed, and morphological reconstructions.
