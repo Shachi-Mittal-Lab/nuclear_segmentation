@@ -6,6 +6,7 @@
     * 3.1\. Segmenatation
     * 3.2\. Evaluation
     * 3.3\. Results
+* 4\. Citing
 
 
 ## 1. ABOUT ##
@@ -94,3 +95,11 @@ Brief description of some of the platforms above:
 
 - <b>Mesmer</b> is a deep learning-based open-source cell segmentation pipeline that predicts centroid and boundary pixels of nuclei followed by a watershed algorithm. Mesmer also uses membrane or cytoplasm markers to segment whole cells as a more accurate alternative to pixel expansion of nuclear masks, which is commonly the case. The model architecture contains a ResNet50 backbone coupled to a Feature Pyramid Network that has four prediction heads (two for nuclear and two for whole-cell segmentation) at the top of the pyramid. Mesmer was trained on TissueNet, a database with 1.2 million nuclear annotations from a variety of imaging platforms, tissue types, and species.  
 
+
+## 4. CITING ##
+
+Please cite these sources if you use this data
+
+1. Sankaranarayanan, A., Khachaturov, G., Smythe, K.S. & Mittal, S. Quantitative benchmarking of nuclear segmentation algorithms in multiplexed immunofluorescence imaging for translational studies. Commun Biol 8, 836 (2025). https://doi.org/10.1038/s42003-025-08184-8
+   
+2. Sankaranarayanan, A., Khachaturov, G., Smythe, K. S. & Mittal, S. Standardized framework and quantitative benchmarking: nuclear segmentation platforms for multiplexed immunofluorescence data in translational studies. Zenodo (2024). https://doi.org/10.5281/zenodo.12775616
