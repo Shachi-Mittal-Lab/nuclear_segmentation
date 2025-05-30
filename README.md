@@ -98,7 +98,7 @@ Brief description of some of the platforms above:
 
 ## 4. CITING ##
 
-Please cite these sources if you use this data
+Please cite these sources
 
 1. Sankaranarayanan, A., Khachaturov, G., Smythe, K.S. & Mittal, S. Quantitative benchmarking of nuclear segmentation algorithms in multiplexed immunofluorescence imaging for translational studies. Commun Biol 8, 836 (2025). https://doi.org/10.1038/s42003-025-08184-8
    
